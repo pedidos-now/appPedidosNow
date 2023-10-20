@@ -4,68 +4,60 @@ import { Card, Text } from "react-native-paper";
 import axios from "axios";
 
 function Pedidos() {
-
     const [pedidos, setData] = useState([]);
-    
+
     useEffect(() => {
-        axios.get('http://191.52.55.88:19002/api/pedidos/')
+        axios.get('http://10.0.0.122:19002/api/pedidos/')
         .then(response => setData(response.data));
-      }, []);
+    }, []);
 
-    return  (
+    return (
         <ScrollView>
-        <View style={styles.container}>
-            {pedidos.map((pedido, id) => (
-                <>
-                <Card style={styles.card}>
-                <Card.Content>
-                <Text style={styles.mesa} variant="titleLarge"># {pedido.mesa}</Text>
-                    <Text style={styles.status}>{pedido.status}</Text>
-                    <Text style={styles.cliente} variant="bodyLarge">{pedido.cliente}</Text>
-                    <Text style={styles.total} >R${pedido.total.toString()},00</Text>
-                </Card.Content>
-                </Card>
-                </>
-
-            ))
-            }
-        </View>
+            <View style={styles.container}>
+                {pedidos.map((pedido, id) => (
+                    <Card key={id} style={styles.card}>
+                        <Card.Content>
+                            <Text style={styles.mesa} variant="titleLarge"># {pedido.mesa}</Text>
+                            <Text style={styles.cliente} variant="bodyLarge">Cliente: {pedido.cliente}</Text>
+                            <Text style={styles.total}>Total: R$ {pedido.total.toFixed(2)}</Text>
+                            <Text style={styles.status}>Status: {pedido.status}</Text>
+                        </Card.Content>
+                    </Card>
+                ))}
+            </View>
         </ScrollView>
     )
-};
+}
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
+        backgroundColor: "#ffff", 
         padding: 20,
         width: '100%'
-      },
-
-      card: {
-        flex: 1,
-        textAlign: 'center',
+    },
+    card: {
         width: "100%",
-        height: "15%",
-        marginBottom: "10%",
-        backgroundColor: "white"
-      },
-
-      mesa: {
-        textAlign: 'center',
-      },
-
-      total: {
-        textAlign: 'right',
-        marginTop: "5%",
-      },
-
-      status: {
-        
-        textAlign: 'right',
-      },
-
-
+        marginBottom: 10,
+        backgroundColor: "#fff", 
+        borderRadius: 8, 
+        elevation: 2,
+    },
+    mesa: {
+        fontSize: 24,
+        fontWeight: "bold", 
+    },
+    status: {
+        fontSize: 18,
+        color: "#d32f2f", 
+    },
+    cliente: {
+        fontSize: 18,
+    },
+    total: {
+        fontSize: 16,
+        marginTop: 5,
+    },
 });
 
 export default Pedidos;
