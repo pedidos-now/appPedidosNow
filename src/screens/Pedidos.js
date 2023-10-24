@@ -1,20 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, Modal, TouchableOpacity } from "react-native";
 import { Card, Text } from "react-native-paper";
 import axios from "axios";
 
 function Pedidos() {
     const [pedidos, setData] = useState([]);
+    const [selectedPedido, setSelectedPedido] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
 
     useEffect(() => {
         axios.get('https://backendpedidosnow-dev-pabx.1.ie-1.fl0.io/api/pedidos/')
         .then(response => setData(response.data));
     }, []);
 
+    const openModal = (pedido) => {
+        setSelectedPedido(pedido);
+        setModalVisible(true);
+    }
+
+    const closeModal = () => {
+        setModalVisible(false);
+    }
+
     return (
         <ScrollView>
             <View style={styles.container}>
                 {pedidos.map((pedido, id) => (
+                     <TouchableOpacity key={id} onPress={() => openModal(pedido)}>
                     <Card key={id} style={styles.card}>
                         <Card.Content>
                             <Text style={styles.mesa} variant="titleLarge"># {pedido.mesa}</Text>
@@ -23,8 +35,35 @@ function Pedidos() {
                             <Text style={styles.status}>Status: {pedido.status}</Text>
                         </Card.Content>
                     </Card>
+                    </TouchableOpacity>
                 ))}
             </View>
+
+            <Modal style={styles.modal}
+                animationType="slide"
+                transparent={false}
+                visible={modalVisible}
+            >
+                <View>
+                
+                    <Text style={styles.mesa} variant="titleLarge"># {selectedPedido?.mesa}</Text>
+                    <Text style={styles.cliente} variant="bodyLarge">Cliente: {selectedPedido?.cliente}</Text>
+                    <Text style={styles.total}>Total: R$ {selectedPedido?.total?.toFixed(2)}</Text>
+                    <Text style={styles.status}>Status: {selectedPedido?.status}</Text>
+                    <Text style={styles.itens}>Itens: {selectedPedido?.itens.titulo} </Text>
+                    
+                    {selectedPedido?.itens.map((item, itemIndex) => (
+                    <View key={itemIndex} style={styles.modalItem}>
+                    <Text>{item.produto.titulo} x {item.quantidade}</Text>
+                    </View>
+                    ))}
+
+                    <TouchableOpacity onPress={closeModal}>
+                        <Text>Fechar</Text>
+                    </TouchableOpacity>
+                
+                </View>
+            </Modal>
         </ScrollView>
     )
 }
@@ -57,6 +96,10 @@ const styles = StyleSheet.create({
     total: {
         fontSize: 16,
         marginTop: 5,
+    },
+    modal: {
+        height: "20%",
+        width: "20%",
     },
 });
 
