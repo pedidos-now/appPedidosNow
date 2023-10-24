@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://10.0.0.122:19002/api/'
+    baseURL: 'https://backendpedidosnow-dev-pabx.1.ie-1.fl0.io/api/'
 })
 
 export default api

@@ -7,7 +7,7 @@ function Pedidos() {
     const [pedidos, setData] = useState([]);
 
     useEffect(() => {
-        axios.get('http://10.0.0.122:19002/api/pedidos/')
+        axios.get('https://backendpedidosnow-dev-pabx.1.ie-1.fl0.io/api/pedidos/')
         .then(response => setData(response.data));
     }, []);
 
