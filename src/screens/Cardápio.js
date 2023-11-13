@@ -116,7 +116,7 @@ function Cardapio() {
 
   return (
     <View>
-      <Text style={styles.titulo}>Cardápio - {pedido.cliente} - {pedido.mesa} - {pedido.itens}</Text>
+      <Text style={styles.titulo}>{pedido.cliente} #{pedido.mesa}</Text>
       <List.AccordionGroup>
         <List.Accordion title="Bebidas" id="1">
         {bebidas.map((bebida, i) => (
