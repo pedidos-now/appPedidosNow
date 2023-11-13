@@ -34,11 +34,26 @@ function Cardapio() {
       itens
     })
   }
+  function removeItem(id) {
+    const itens = pedido.itens.filter(item => item !== id);
+    setPedido({
+      cliente: pedido.cliente,
+      mesa: pedido.mesa,
+      itens
+    });
+  }
 
   function changeCheckChawarmas(i) {
     let novoChecked = [...checkedChawarmas];
     novoChecked[i] = !novoChecked[i];
     setCheckedChawarmas(novoChecked);
+
+    const itemId = chawarmas[i].id;
+    if (novoChecked[i]) {
+      addItem(itemId);
+    } else {
+      removeItem(itemId);
+    }
   }
 
   const [bebidas, setBebidas] = useState([]);
@@ -47,6 +62,14 @@ function Cardapio() {
     let novoChecked = [...checkedBebidas];
     novoChecked[i] = !novoChecked[i];
     setCheckedBebidas(novoChecked);
+
+    const itemId = bebidas[i].id;
+  if (novoChecked[i]) {
+    addItem(itemId);
+  } else {
+    removeItem(itemId);
+  }
+
   }
 
   const [porcoes, setPorcoes] = useState([]);
@@ -55,6 +78,13 @@ function Cardapio() {
     let novoChecked = [...checkedPorcoes];
     novoChecked[i] = !novoChecked[i];
     setCheckedPorcoes(novoChecked);
+
+    const itemId = porcoes[i].id;
+  if (novoChecked[i]) {
+    addItem(itemId);
+  } else {
+    removeItem(itemId);
+  }
   }
 
   useEffect(() => {
@@ -96,7 +126,6 @@ function Cardapio() {
                 status={checkedBebidas[i] ? "checked" : "unchecked"}
                 onPress={() => {
                   changeCheckBebidas(i);
-                  addItem(bebida.id)
                 }}
               />
             </View>
@@ -110,7 +139,6 @@ function Cardapio() {
                 status={checkedChawarmas[i] ? "checked" : "unchecked"}
                 onPress={() => {
                   changeCheckChawarmas(i);
-                  addItem(chawarma.id)
 
                 }}
               />
@@ -125,7 +153,6 @@ function Cardapio() {
                 status={checkedPorcoes[i] ? "checked" : "unchecked"}
                 onPress={() => {
                   changeCheckPorcoes(i);
-                  addItem(porcao.id)
                 }}
               />
             </View>
